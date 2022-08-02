@@ -1,7 +1,7 @@
 # Getting Started with node_learning
 
 Nodejs documentation link - [https://nodejs.dev](https://nodejs.dev) \
-Express documentation link - [https://expressjs.com/](https://expressjs.com)
+Express documentation link - [https://expressjs.com](https://expressjs.com)
 
 ## Available Scripts
 
