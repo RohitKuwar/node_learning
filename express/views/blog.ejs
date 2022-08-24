@@ -7,12 +7,9 @@
   <title>Node Learning | <%= title %></title>
 </head>
 <body>
+  <%- include('./partials/nav.ejs') %>
+  
   <h1>This is blog page</h1>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/blog">Blog</a>
-    <a href="/blog/create">New Blog</a>
-  </nav>
   <h3>All Blogs</h3>
   <% if(blogs && blogs.length > 0) { %>
     <% blogs.forEach(blog => { %>
