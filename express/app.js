@@ -1,12 +1,17 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const Blog = require('./models/blog');
+
+//environment varialbles in app.js
+dotenv.config();
 
 //express app
 const app = express();
 
 //connect to MongoDB
-const dbURI = 'mongodb+srv://guddu:guddu1997@cluster0.naep6ap.mongodb.net/my_app?retryWrites=true&w=majority';
+const dbURI = `${process.env.DB_URI}`;
+
 mongoose.connect(dbURI)
 .then(res => console.log('connected to DB', res))
 .catch(err => console.log('error connecting to DB', err));
