@@ -1,13 +1,44 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog');
 
 //express app
 const app = express();
+
+//connect to MongoDB
+const dbURI = 'mongodb+srv://guddu:guddu1997@cluster0.naep6ap.mongodb.net/my_app?retryWrites=true&w=majority';
+mongoose.connect(dbURI)
+.then(res => console.log('connected to DB', res))
+.catch(err => console.log('error connecting to DB', err));
 
 //register view engine
 app.set('view engine', 'ejs');
 
 //listen for requests
 app.listen(8000);
+
+//mongoose and mongo sandbox routes
+app.get('/add-blog', (req, res) => {
+  const blog = new Blog({
+    title: 'my new blog 11',
+    body: 'about my new blog 11 blah blah blah blah....'
+  })
+  blog.save()
+  .then(result => res.send(result))
+  .catch(err => console.log(err))
+})
+
+app.get('/all-blog', (req, res) => {
+  Blog.find()
+  .then(result => res.send(result))
+  .catch(err => console.log(err))
+})
+
+app.get('/single-blog', (req, res) => {
+  Blog.findById('63070451849d83160686aeaf')
+    .then(result => res.send(result))
+    .catch(err => console.log(err))
+})
 
 //middleware - It is the code running on the server in between request and response process
 app.use((req, res, next) => {
