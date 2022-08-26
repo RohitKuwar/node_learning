@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const Blog = require('./models/blog');
+const blogRoutes = require('./routes/blogRoutes');
 
 //environment varialbles in app.js
 dotenv.config();
@@ -76,35 +76,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//here we are rendering html page using ejs view engine
-app.get('/blog', (req, res) => {
-  Blog.find()
-  .then(result => {
-    res.render('blog', {title: 'Blog', blogs: result});
-  })
-  .catch(err => console.log(err))
-  // const blogs = [
-  //   {title: 'Blog1', text: 'This is blog1.'},
-  //   {title: 'Blog2', text: 'This is blog2.'},
-  //   {title: 'Blog3', text: 'This is blog3.'},
-  // ];
-});
-
-app.post('/blog', (req, res) => {
-  const blog = new Blog(req.body);
-  blog.save()
-  .then(result => {
-      res.redirect('/blog');
-    })
-    .catch(err => {
-      console.log(err);
-    });
-})
-
-app.get('/blog/create', (req, res) => {
-  res.render('create', {title: 'Create'});
-});
-
 app.get("/about", (req, res) => {
   res.sendFile("./views/about.html", { root: __dirname });
 });
@@ -113,6 +84,8 @@ app.get("/about", (req, res) => {
 app.get('./about-us', (req, res) => {
   res.redirect('/about')
 });
+
+app.use(blogRoutes)
 
 //error page
 app.use((req, res) => {
