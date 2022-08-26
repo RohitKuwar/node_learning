@@ -19,31 +19,34 @@ mongoose.connect(dbURI)
 //register view engine
 app.set('view engine', 'ejs');
 
+//middleware
+app.use(express.urlencoded({ extended: true }));
+
 //listen for requests
 app.listen(8000);
 
 //mongoose and mongo sandbox routes
-app.get('/add-blog', (req, res) => {
-  const blog = new Blog({
-    title: 'my new blog 11',
-    body: 'about my new blog 11 blah blah blah blah....'
-  })
-  blog.save()
-  .then(result => res.send(result))
-  .catch(err => console.log(err))
-})
+// app.get('/add-blog', (req, res) => {
+//   const blog = new Blog({
+//     title: 'my new blog 11',
+//     body: 'about my new blog 11 blah blah blah blah....'
+//   })
+//   blog.save()
+//   .then(result => res.send(result))
+//   .catch(err => console.log(err))
+// })
 
-app.get('/all-blog', (req, res) => {
-  Blog.find()
-  .then(result => res.send(result))
-  .catch(err => console.log(err))
-})
+// app.get('/all-blog', (req, res) => {
+//   Blog.find()
+//   .then(result => res.send(result))
+//   .catch(err => console.log(err))
+// })
 
-app.get('/single-blog', (req, res) => {
-  Blog.findById('63070451849d83160686aeaf')
-    .then(result => res.send(result))
-    .catch(err => console.log(err))
-})
+// app.get('/single-blog', (req, res) => {
+//   Blog.findById('63070451849d83160686aeaf')
+//     .then(result => res.send(result))
+//     .catch(err => console.log(err))
+// })
 
 //middleware - It is the code running on the server in between request and response process
 app.use((req, res, next) => {
@@ -75,14 +78,28 @@ app.use((req, res, next) => {
 
 //here we are rendering html page using ejs view engine
 app.get('/blog', (req, res) => {
-  const blogs = [
-    {title: 'Blog1', text: 'This is blog1.'},
-    {title: 'Blog2', text: 'This is blog2.'},
-    {title: 'Blog3', text: 'This is blog3.'},
-  ];
-
-  res.render('blog', {title: 'Blog', blogs: blogs});
+  Blog.find()
+  .then(result => {
+    res.render('blog', {title: 'Blog', blogs: result});
+  })
+  .catch(err => console.log(err))
+  // const blogs = [
+  //   {title: 'Blog1', text: 'This is blog1.'},
+  //   {title: 'Blog2', text: 'This is blog2.'},
+  //   {title: 'Blog3', text: 'This is blog3.'},
+  // ];
 });
+
+app.post('/blog', (req, res) => {
+  const blog = new Blog(req.body);
+  blog.save()
+  .then(result => {
+      res.redirect('/blog');
+    })
+    .catch(err => {
+      console.log(err);
+    });
+})
 
 app.get('/blog/create', (req, res) => {
   res.render('create', {title: 'Create'});

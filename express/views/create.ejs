@@ -10,12 +10,12 @@
   <%- include('./partials/nav.ejs') %>
   
   <h1>New blog</h1>
-  <form>
-    <label for="title">Title</label>
+  <form action="/blog" method="post">
+    <label for="title">Title</label> <br>
     <input type="text" name="title" />
     <br />
-    <label for="blog">Blog</label>
-    <textarea name="blog" cols="20" rows="5"></textarea>
+    <label for="text">Blog</label> <br>
+    <textarea name="text"></textarea>
     <br>
     <button>Submit</button>
   </form>
